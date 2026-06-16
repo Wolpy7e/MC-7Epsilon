@@ -1,12 +1,45 @@
 # MC Control Center (Discord)
 
-Minimal scaffold for a Discord Control Center for Minecraft Bedrock.
+Discord bot starter kit untuk mengelola Minecraft Bedrock server dari Discord.
 
-Setup
+Bot ini mencakup:
 
-1. Copy `.env.example` to `.env` and fill values:
+- Kontrol server via perintah `/server`
+- Status server otomatis di channel `#📊»status-server`
+- Log perintah RCON di channel `#📜»log-server`
+- Panel admin dengan whitelist dan broadcast
+- Notifikasi penting dengan embed dan mention role
+- Voice support: join, leave, TTS, play URL
 
+## Fitur
+
+- `server start` / `stop` / `restart` dengan tombol konfirmasi
+- `server status` menampilkan status server Bedrock
+- `/admin` untuk manajemen whitelist, broadcast, dan eksekusi RCON
+- `voice` command untuk audio dan TTS di voice channel
+- Otomatis kirim status dan log ke channel yang terkonfigurasi
+
+## Persiapan
+
+1. Salin `.env.example` ke `.env`
+2. Isi token Discord, guild/channel IDs, dan pengaturan RCON
+3. Install dependensi:
+
+```bash
+npm install
 ```
+
+4. Jalankan development:
+
+```bash
+npm run dev
+```
+
+## Environment variables
+
+Contoh isi `.env`:
+
+```env
 DISCORD_TOKEN=your-discord-bot-token
 GUILD_ID=your-guild-id
 CONTROL_CHANNEL_ID=channel-id-for-control-panel
@@ -21,54 +54,81 @@ RCON_PORT=19132
 RCON_PASSWORD=changeme
 ```
 
-2. Install dependencies:
+- `CONTROL_CHANNEL_ID` = channel khusus untuk perintah kontrol server.
+- `STATUS_CHANNEL_ID` = channel untuk status rutin.
+- `LOG_CHANNEL_ID` = channel untuk log RCON.
+- `NOTIFICATION_CHANNEL_ID` = channel untuk notifikasi penting.
+- `NOTIFY_ROLE_ID` = role yang akan di-mention untuk notifikasi.
+- `ADMIN_ROLE_ID` = role admin yang bisa menggunakan `/admin`.
+- `WHITELIST_FILE` = lokasi file JSON untuk menyimpan whitelist.
+
+## Commands
+
+### Server control
+
+- `/server start`
+- `/server stop`
+- `/server restart`
+- `/server status`
+
+### Admin panel
+
+- `/admin broadcast`
+- `/admin whitelist-add`
+- `/admin whitelist-remove`
+- `/admin whitelist-list`
+- `/admin rcon`
+- `/admin players`
+
+### Voice
+
+- `/voice join`
+- `/voice leave`
+- `/voice tts`
+- `/voice play`
+
+## Deploy
+
+Jalankan build dan start:
 
 ```bash
-npm install
+npm run build
+npm start
 ```
 
-3. Run in development:
+Atau jalankan dengan PM2:
 
 ```bash
-npm run dev
+npm run serve
 ```
 
-Notes
+Skrip deploy:
 
-- This is a starter scaffold. RCON behavior for Bedrock depends on your hosting provider. For full host control you may need provider API or SSH access.
-- Next steps: implement status posting, automatic logs, admin chat panel, security checks, and voice integration.
- 
- Voice commands
- 
- Use `/voice join` to make the bot join your current voice channel.
- Use `/voice leave` to make the bot leave.
- Use `/voice tts text:...` to have the bot speak text via TTS.
- Use `/voice play url:...` to play an audio URL.
- 
- Testing checklist
- 
- - Fill `.env` with tokens and channel IDs.
- - Run `npm install` to install dependencies.
- - Run `npm run dev` and watch console for 'Registered guild commands'.
- - In Discord, use the slash commands in the configured guild.
- 
-Deployment
+- Linux/macOS: `./deploy.sh`
+- Windows: `./deploy.ps1`
 
-- Build the bot: `npm run build`
-- Run production: `npm start`
-- Use PM2 if installed: `npm run serve`
-- On Linux/macOS: `./deploy.sh`
-- On Windows PowerShell: `.\deploy.ps1`
+## Upload ke GitHub
 
-GitHub upload
+Jika Git sudah tersedia, jalankan:
 
-1. Initialize repo (if not already): `git init`
-2. Add files: `git add .`
-3. Commit: `git commit -m "Initial Discord Control Center for Minecraft Bedrock"`
-4. Create GitHub repo and add remote: `git remote add origin https://github.com/youruser/yourrepo.git`
-5. Push: `git push -u origin main`
+```bash
+cd "f:\Discord Bot\Bot MC"
+.\upload-to-github.ps1 -RepoUrl "https://github.com/youruser/yourrepo.git"
+```
 
-GitHub Actions
+Atau jika Anda menggunakan bash:
 
-- This repository includes a CI workflow at `.github/workflows/nodejs.yml`.
-- The workflow installs dependencies and runs `npm run ci` on push and pull request.
+```bash
+./upload-to-github.sh "https://github.com/youruser/yourrepo.git"
+```
+
+## CI
+
+- Ada workflow GitHub Actions di `.github/workflows/nodejs.yml`.
+- Workflow ini menjalankan `npm install` dan `npm run build`.
+
+## Catatan
+
+- Pastikan `RCON_PASSWORD` tidak di-commit.
+- Untuk host Bedrock server di Anjas, gunakan RCON host/port yang diberikan provider.
+- `start`/`restart` saat ini menggunakan placeholder karena kontrol start/stop penuh biasanya melalui API hosting.
