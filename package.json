@@ -1,0 +1,31 @@
+{
+  "name": "mc-control-center",
+  "version": "0.1.0",
+  "description": "Discord Control Center for Minecraft Bedrock",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "deploy": "npm install && npm run build",
+    "serve": "pm2 startOrRestart ecosystem.config.js --env production",
+    "status": "pm2 status",
+    "ci": "npm install && npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.0.0",
+    "rcon-client": "^5.0.0",
+    "@discordjs/voice": "^0.15.0",
+    "undici": "^6.0.0",
+    "google-tts-api": "^2.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0",
+    "ts-node-dev": "^2.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
