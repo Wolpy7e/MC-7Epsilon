@@ -1,43 +1,72 @@
-# MC Control Center (Discord)
+# MC-7Epsilon
 
-Discord bot starter kit untuk mengelola Minecraft Bedrock server dari Discord.
+A Discord control center for managing a Minecraft Bedrock server directly from Discord.
 
-Bot ini mencakup:
+MC-7Epsilon gives you a clean way to monitor a server, issue RCON commands, manage whitelist access, broadcast messages, and control voice announcements from your Discord guild.
 
-- Kontrol server via perintah `/server`
-- Status server otomatis di channel `#📊»status-server`
-- Log perintah RCON di channel `#📜»log-server`
-- Panel admin dengan whitelist dan broadcast
-- Notifikasi penting dengan embed dan mention role
-- Voice support: join, leave, TTS, play URL
+## Features
 
-## Fitur
+- `/server start` / `stop` / `restart` / `status`
+- Automatic status posting to a configured Discord channel
+- RCON command logging and error notifications
+- Admin tools for whitelist management and broadcasts
+- Voice commands for join, leave, TTS, and URL playback
+- Flexible configuration through environment variables
 
-- `server start` / `stop` / `restart` dengan tombol konfirmasi
-- `server status` menampilkan status server Bedrock
-- `/admin` untuk manajemen whitelist, broadcast, dan eksekusi RCON
-- `voice` command untuk audio dan TTS di voice channel
-- Otomatis kirim status dan log ke channel yang terkonfigurasi
+## Tech Stack
 
-## Persiapan
+- Node.js 18+
+- TypeScript
+- Discord.js v14
+- @discordjs/voice
+- RCON client for Bedrock server communication
 
-1. Salin `.env.example` ke `.env`
-2. Isi token Discord, guild/channel IDs, dan pengaturan RCON
-3. Install dependensi:
+## Project Structure
+
+```text
+src/
+  commands/      Discord slash command handlers
+  services/      status posting, notifications, log relay
+  utils/         RCON, whitelist, and voice helpers
+README.md
+.env.example
+package.json
+```
+
+## Prerequisites
+
+Before you run the project, make sure you have:
+
+- A Discord bot token
+- A Discord guild ID
+- Access to a Minecraft Bedrock server with RCON enabled
+- Node.js 18 or newer
+- npm
+
+## Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/Wolpy7e/MC-7Epsilon.git
+cd MC-7Epsilon
+```
+
+2. Install dependencies
 
 ```bash
 npm install
 ```
 
-4. Jalankan development:
+3. Create a `.env` file from the example
 
 ```bash
-npm run dev
+cp .env.example .env
 ```
 
-## Environment variables
+4. Update the values in `.env`
 
-Contoh isi `.env`:
+## Environment Variables
 
 ```env
 DISCORD_TOKEN=your-discord-bot-token
@@ -51,27 +80,53 @@ ADMIN_ROLE_ID=role-id-for-admin-access
 WHITELIST_FILE=./data/whitelist.json
 RCON_HOST=127.0.0.1
 RCON_PORT=19132
-RCON_PASSWORD=changeme
+RCON_PASSWORD=your-rcon-password
+STATUS_INTERVAL_SECONDS=60
+RCON_POOL_SIZE=3
 ```
 
-- `CONTROL_CHANNEL_ID` = channel khusus untuk perintah kontrol server.
-- `STATUS_CHANNEL_ID` = channel untuk status rutin.
-- `LOG_CHANNEL_ID` = channel untuk log RCON.
-- `NOTIFICATION_CHANNEL_ID` = channel untuk notifikasi penting.
-- `NOTIFY_ROLE_ID` = role yang akan di-mention untuk notifikasi.
-- `ADMIN_ROLE_ID` = role admin yang bisa menggunakan `/admin`.
-- `WHITELIST_FILE` = lokasi file JSON untuk menyimpan whitelist.
+### Variable Notes
+
+- `CONTROL_CHANNEL_ID`: channel where server control commands are allowed
+- `STATUS_CHANNEL_ID`: channel for periodic server status messages
+- `LOG_CHANNEL_ID`: channel for RCON send/response/error logs
+- `NOTIFICATION_CHANNEL_ID`: channel for status and error alerts
+- `NOTIFY_ROLE_ID`: Discord role mention for notifications
+- `ADMIN_ROLE_ID`: role that can use admin commands
+- `WHITELIST_FILE`: JSON file path for the whitelist feature
+- `RCON_PASSWORD`: must be kept private and not committed
+
+## Run the Bot
+
+### Development mode
+
+```bash
+npm run dev
+```
+
+### Production build
+
+```bash
+npm run build
+npm start
+```
+
+### PM2 deployment
+
+```bash
+npm run serve
+```
 
 ## Commands
 
-### Server control
+### Server commands
 
+- `/server status`
 - `/server start`
 - `/server stop`
 - `/server restart`
-- `/server status`
 
-### Admin panel
+### Admin commands
 
 - `/admin broadcast`
 - `/admin whitelist-add`
@@ -80,55 +135,51 @@ RCON_PASSWORD=changeme
 - `/admin rcon`
 - `/admin players`
 
-### Voice
+### Voice commands
 
 - `/voice join`
 - `/voice leave`
 - `/voice tts`
 - `/voice play`
 
-## Deploy
+## Deployment Notes
 
-Jalankan build dan start:
+The project includes deployment utilities for common environments:
 
-```bash
-npm run build
-npm start
-```
+- `./deploy.sh` for Linux/macOS
+- `./deploy.ps1` for Windows
+- `ecosystem.config.js` for PM2
 
-Atau jalankan dengan PM2:
+## Security
 
-```bash
-npm run serve
-```
+- Keep `.env` out of git history
+- Do not hardcode production server credentials
+- Restrict admin channels and roles to trusted members only
+- Use proper bot permissions in your Discord guild
 
-Skrip deploy:
+## Troubleshooting
 
-- Linux/macOS: `./deploy.sh`
-- Windows: `./deploy.ps1`
+### Bot is not responding
 
-## Upload ke GitHub
+- Verify `DISCORD_TOKEN` and `GUILD_ID` are set correctly
+- Make sure the bot has permission to read/send messages in the target channels
 
-Jika Git sudah tersedia, jalankan:
+### RCON commands fail
 
-```bash
-cd "f:\Discord Bot\Bot MC"
-.\upload-to-github.ps1 -RepoUrl "https://github.com/youruser/yourrepo.git"
-```
+- Confirm `RCON_HOST`, `RCON_PORT`, and `RCON_PASSWORD` are correct
+- Make sure RCON is enabled on the Bedrock server
+- Check firewall or hosting restrictions if the server is remote
 
-Atau jika Anda menggunakan bash:
+### Voice commands fail
 
-```bash
-./upload-to-github.sh "https://github.com/youruser/yourrepo.git"
-```
+- Confirm the bot has permission to connect to voice channels
+- Ensure the bot has access to the guild and voice adapter support
+- Check if the provided audio URL is valid and reachable
 
-## CI
+## License
 
-- Ada workflow GitHub Actions di `.github/workflows/nodejs.yml`.
-- Workflow ini menjalankan `npm install` dan `npm run build`.
+This project is distributed as-is for educational and self-hosted use.
 
-## Catatan
+## Contribution
 
-- Pastikan `RCON_PASSWORD` tidak di-commit.
-- Untuk host Bedrock server di Anjas, gunakan RCON host/port yang diberikan provider.
-- `start`/`restart` saat ini menggunakan placeholder karena kontrol start/stop penuh biasanya melalui API hosting.
+Pull requests and suggestions are welcome. If you improve the bot, please keep the project clean, well-documented, and compatible with the existing structure.
