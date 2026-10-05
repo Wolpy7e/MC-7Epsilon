@@ -1,8 +1,8 @@
-# MC-7Epsilon
+# MC-BotDiscord
 
 A Discord control center for managing a Minecraft Bedrock server directly from Discord.
 
-MC-7Epsilon gives you a clean way to monitor a server, issue RCON commands, manage whitelist access, broadcast messages, and control voice announcements from your Discord guild.
+MC-BotDiscord gives you a clean way to monitor a server, issue RCON commands, manage whitelist access, broadcast messages, and control voice announcements from your Discord guild.
 
 ## Features
 
@@ -48,7 +48,7 @@ Before you run the project, make sure you have:
 1. Clone the repository
 
 ```bash
-git clone https://github.com/Wolpy7e/MC-7Epsilon.git
+git clone https://github.com/Wolpy7e/MC-BotDiscord.git
 cd MC-BotDiscord
 ```
 
