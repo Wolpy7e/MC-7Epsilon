@@ -49,7 +49,7 @@ Before you run the project, make sure you have:
 
 ```bash
 git clone https://github.com/Wolpy7e/MC-7Epsilon.git
-cd MC-7Epsilon
+cd MC-BotDiscord
 ```
 
 2. Install dependencies
